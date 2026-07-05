@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jeorge Joshi — AI/ML Engineer</title>
+<meta name="description" content="Jeorge Joshi — AI/ML Engineer building semantic search, retrieval-augmented systems, and audio representation learning research.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0F1A1D;
+    --bg-alt: #142226;
+    --text: #E9E6DE;
+    --text-dim: #9BA8A8;
+    --line: #26363A;
+    --cyan: #52D9CF;
+    --amber: #F5B265;
+    --violet: #9C93D6;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  html{ scroll-behavior: smooth; }
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a{ color: inherit; }
+  a:focus-visible, button:focus-visible{
+    outline: 2px solid var(--cyan);
+    outline-offset: 3px;
+  }
+  ::selection{ background: var(--cyan); color: var(--bg); }
+
+  .wrap{ max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+  .eyebrow{
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--cyan);
+    letter-spacing: 0.02em;
+  }
+
+  /* NAV */
+  header.nav{
+    position: sticky; top:0; z-index: 50;
+    background: rgba(15,26,29,0.88);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner{
+    max-width: 880px; margin: 0 auto; padding: 14px 24px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .nav-name{ font-family: var(--font-display); font-weight:600; font-size:1.05rem; }
+  .nav-links{ display:flex; gap: 22px; list-style:none; font-family: var(--font-mono); font-size:0.85rem; }
+  .nav-links a{ text-decoration:none; color: var(--text-dim); transition: color .15s; }
+  .nav-links a:hover{ color: var(--cyan); }
+
+  /* HERO */
+  .hero{
+    position: relative;
+    padding: 84px 0 64px;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+  #scatter{
+    position:absolute; inset:0; width:100%; height:100%;
+    opacity: 0.55;
+    pointer-events:none;
+  }
+  .hero-inner{ position:relative; z-index:2; }
+  h1.title{
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.4rem, 6vw, 3.6rem);
+    line-height: 1.05;
+    margin: 10px 0 14px;
+  }
+  .role-line{
+    font-family: var(--font-mono);
+    color: var(--text-dim);
+    font-size: 1rem;
+    margin-bottom: 22px;
+  }
+  .role-line .sep{ color: var(--line); margin: 0 8px; }
+  p.summary{
+    max-width: 620px;
+    color: var(--text-dim);
+    font-size: 1.02rem;
+    margin-bottom: 30px;
+  }
+  .cta-row{ display:flex; gap:14px; flex-wrap:wrap; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding: 11px 20px;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    text-decoration:none;
+    border: 1px solid var(--line);
+    transition: transform .15s, border-color .15s, background .15s;
+  }
+  .btn-primary{ background: var(--cyan); color: var(--bg); border-color: var(--cyan); font-weight:500; }
+  .btn-primary:hover{ transform: translateY(-1px); }
+  .btn-ghost{ color: var(--text); }
+  .btn-ghost:hover{ border-color: var(--cyan); color: var(--cyan); }
+
+  /* SECTIONS */
+  section{ padding: 56px 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type{ border-bottom:none; }
+  h2.section-title{
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    margin-bottom: 26px;
+    display:flex; align-items:baseline; gap:10px;
+  }
+  h2.section-title .num{ font-family: var(--font-mono); color: var(--text-dim); font-size:0.85rem; }
+
+  /* EXPERIENCE */
+  .entry{ margin-bottom: 34px; }
+  .entry:last-child{ margin-bottom:0; }
+  .entry-head{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:6px; }
+  .entry-role{ font-weight:600; font-size:1.05rem; }
+  .entry-org{ color: var(--cyan); font-family: var(--font-mono); font-size:0.88rem; }
+  .entry-meta{ font-family: var(--font-mono); font-size:0.8rem; color: var(--text-dim); text-align:right; }
+  ul.bullets{ list-style:none; margin-top: 10px; }
+  ul.bullets li{
+    position:relative; padding-left: 18px; margin-bottom:8px;
+    color: var(--text-dim); font-size: 0.95rem;
+  }
+  ul.bullets li::before{
+    content:"·"; position:absolute; left:0; color: var(--amber); font-weight:700; font-size:1.2rem; line-height:1;
+  }
+  ul.bullets b{ color: var(--text); font-weight:600; }
+
+  /* PROJECT CARD */
+  .project-card{
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 26px 28px;
+  }
+  .project-head{ display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px; margin-bottom: 10px;}
+  .project-title{ font-family: var(--font-display); font-weight:600; font-size:1.2rem; }
+  .tag-row{ display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+  .tag{
+    font-family: var(--font-mono); font-size: 0.72rem;
+    padding: 4px 10px; border-radius: 999px;
+    border: 1px solid var(--line); color: var(--violet);
+  }
+
+  /* SKILLS */
+  .skills-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 22px 40px; }
+  @media (max-width:600px){ .skills-grid{ grid-template-columns: 1fr; } }
+  .skill-group dt{
+    font-family: var(--font-mono); font-size:0.78rem; color: var(--cyan);
+    margin-bottom:8px; text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .skill-group dd{ color: var(--text-dim); font-size:0.92rem; }
+
+  /* FOOTER */
+  footer{ padding: 46px 0 70px; }
+  .foot-inner{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+  .foot-links{ display:flex; gap:20px; font-family: var(--font-mono); font-size:0.85rem; }
+  .foot-links a{ text-decoration:none; color: var(--text-dim); }
+  .foot-links a:hover{ color: var(--cyan); }
+  .foot-note{ font-family: var(--font-mono); font-size:0.75rem; color: var(--text-dim); }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    #scatter{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="nav-name">JJ</div>
+    <ul class="nav-links">
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<section class="hero">
+  <canvas id="scatter"></canvas>
+  <div class="wrap hero-inner">
+    <div class="eyebrow">~/ai-ml-engineer</div>
+    <h1 class="title">Jeorge Joshi</h1>
+    <div class="role-line">AI/ML Engineer<span class="sep">/</span>Semantic Search &amp; RAG Systems<span class="sep">/</span>Audio Representation Learning</div>
+    <p class="summary">
+      I build production retrieval and search systems — semantic search, RAG pipelines, vector-database-backed retrieval, and LLM serving infrastructure — and currently research large-scale audio representation learning at UT Arlington. Based in Arlington, Texas.
+    </p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="resume.pdf" target="_blank" rel="noopener">Download Résumé</a>
+      <a class="btn btn-ghost" href="mailto:georgejoshi10@gmail.com">Email Me</a>
+      <a class="btn btn-ghost" href="https://github.com/wp225" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <h2 class="section-title"><span class="num">01</span> Experience</h2>
+
+    <div class="entry">
+      <div class="entry-head">
+        <div>
+          <div class="entry-role">Research Assistant</div>
+          <div class="entry-org">ACL2 Lab, University of Texas at Arlington</div>
+        </div>
+        <div class="entry-meta">Arlington, TX<br>Jan 2026 – Present</div>
+      </div>
+      <ul class="bullets">
+        <li>Embedding and unsupervised clustering on a <b>900K+ sample</b> acoustic dataset; segmentation/isolation pipelines reaching <b>96–98% F1</b> in-domain, scaled to <b>110K+ files</b> on a multi-GPU cluster.</li>
+        <li>Designed a <b>VQ-based representation learning</b> framework comparing tokenization strategies for audio signals, prepared for ACL Rolling Review (EMNLP).</li>
+        <li>Evaluated SOTA self-supervised embedding models (<b>HuBERT</b>, <b>AVES</b>) across human and non-human audio domains.</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head">
+        <div>
+          <div class="entry-role">AI Engineer</div>
+          <div class="entry-org">DL.surf</div>
+        </div>
+        <div class="entry-meta">Bhaktapur, Kathmandu<br>Aug 2024 – Jul 2025</div>
+      </div>
+      <ul class="bullets">
+        <li>Built a semantic <b>search &amp; re-ranking system</b> handling <b>150K+ daily requests</b> (FastAPI, all-MiniLM-L6-v2, Milvus, Cohere Reranker); cut query latency <b>~60%</b> via Redis caching.</li>
+        <li>Developed a low-latency <b>NSFW classifier</b> for images, video, and text; quantized to INT8 (PyTorch → ONNX → TFLite) for CPU-native inference via XNNPACK.</li>
+        <li>Owned <b>infrastructure end-to-end</b>: PostgreSQL schema design, Dockerized services, CI/CD (GitHub Actions, Jenkins), and Grafana/Prometheus monitoring.</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head">
+        <div>
+          <div class="entry-role">Machine Learning Intern</div>
+          <div class="entry-org">Treeleaf Technologies</div>
+        </div>
+        <div class="entry-meta">Kathmandu, Nepal<br>May 2023 – Jul 2023</div>
+      </div>
+      <ul class="bullets">
+        <li>Developed and optimized <b>YOLOv7</b>-based computer vision models for object detection; supported production deployment.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <h2 class="section-title"><span class="num">02</span> Featured Project</h2>
+    <div class="project-card">
+      <div class="project-head">
+        <div class="project-title">AniSpeakArchive</div>
+        <div class="entry-meta" style="text-align:left">Bioacoustics Literature Search Engine</div>
+      </div>
+      <ul class="bullets">
+        <li>4-stage, resumable data pipeline (ingest → classify → annotate → index) filtering <b>100K+ OpenAlex papers</b> down to a relevant bioacoustics corpus via a fine-tuned SciBERT classifier.</li>
+        <li>Retrieval-Augmented Generation system: <b>Qwen2.5-14B</b> served with <b>vLLM</b> for structured metadata extraction, plus a hybrid <b>BM25 + dense-embedding</b> retrieval index (LanceDB) with reranking.</li>
+        <li>Deployed as a Flask app with OTP-based auth and saved-search alerts, containerized with Docker, served via Gunicorn.</li>
+      </ul>
+      <div class="tag-row">
+        <span class="tag">RAG</span>
+        <span class="tag">vLLM</span>
+        <span class="tag">LanceDB</span>
+        <span class="tag">SciBERT</span>
+        <span class="tag">Flask</span>
+        <span class="tag">Docker</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <h2 class="section-title"><span class="num">03</span> Skills</h2>
+    <dl class="skills-grid">
+      <div class="skill-group">
+        <dt>Languages</dt>
+        <dd>Python, SQL, C++, JavaScript</dd>
+      </div>
+      <div class="skill-group">
+        <dt>GenAI &amp; LLM</dt>
+        <dd>HuggingFace, vLLM, RAG, Vector Search (Milvus, LanceDB)</dd>
+      </div>
+      <div class="skill-group">
+        <dt>ML / DL</dt>
+        <dd>PyTorch, TensorFlow, scikit-learn, Keras, OpenCV, YOLO, MLflow</dd>
+      </div>
+      <div class="skill-group">
+        <dt>Infra &amp; APIs</dt>
+        <dd>REST APIs, FastAPI, Docker, Kubernetes, AWS, GitHub Actions, Prometheus, Grafana</dd>
+      </div>
+      <div class="skill-group">
+        <dt>Data</dt>
+        <dd>PostgreSQL, Milvus, LanceDB, Kafka, MongoDB</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap foot-inner">
+    <div>
+      <div class="eyebrow">Get in touch</div>
+      <div style="font-family: var(--font-display); font-size:1.1rem; margin-top:4px;">georgejoshi10@gmail.com</div>
+    </div>
+    <div class="foot-links">
+      <a href="mailto:georgejoshi10@gmail.com">Email</a>
+      <a href="https://github.com/wp225" target="_blank" rel="noopener">GitHub</a>
+      <!-- TODO: verify this LinkedIn URL before deploying — looks like it may be an unedited template placeholder -->
+      <a href="https://www.linkedin.com/in/jeorge-joshi-a1b2c3/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+  <div class="wrap foot-note" style="margin-top:20px;">Arlington, TX — Open to AI/ML Engineering roles</div>
+</footer>
+
+<script>
+(function(){
+  var canvas = document.getElementById('scatter');
+  if(!canvas) return;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce) return;
+  var ctx = canvas.getContext('2d');
+  var hero = canvas.parentElement;
+  var W, H, dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  function resize(){
+    W = hero.clientWidth; H = hero.clientHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  var colors = ['#52D9CF', '#F5B265', '#9C93D6'];
+  var clusters = [
+    {cx: W*0.78, cy: H*0.3, n: 24},
+    {cx: W*0.9,  cy: H*0.65, n: 18},
+    {cx: W*0.62, cy: H*0.75, n: 16}
+  ];
+  var points = [];
+  clusters.forEach(function(c, ci){
+    for(var i=0;i<c.n;i++){
+      var ang = Math.random()*Math.PI*2;
+      var rad = Math.random()*60*(hero.clientWidth/900);
+      points.push({
+        baseX: c.cx + Math.cos(ang)*rad,
+        baseY: c.cy + Math.sin(ang)*rad,
+        r: Math.random()*2 + 1.2,
+        color: colors[ci % colors.length],
+        phase: Math.random()*Math.PI*2,
+        speed: 0.3 + Math.random()*0.4
+      });
+    }
+  });
+
+  var t = 0;
+  function draw(){
+    t += 0.01;
+    ctx.clearRect(0,0,W,H);
+    // connecting lines within short distance
+    ctx.lineWidth = 0.6;
+    for(var i=0;i<points.length;i++){
+      var p = points[i];
+      p.x = p.baseX + Math.sin(t*p.speed + p.phase)*6;
+      p.y = p.baseY + Math.cos(t*p.speed + p.phase)*6;
+    }
+    for(var i=0;i<points.length;i++){
+      for(var j=i+1;j<points.length;j++){
+        var a=points[i], b=points[j];
+        var dx=a.x-b.x, dy=a.y-b.y;
+        var d=Math.sqrt(dx*dx+dy*dy);
+        if(d<46){
+          ctx.strokeStyle = 'rgba(82,217,207,' + (0.12*(1-d/46)) + ')';
+          ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+        }
+      }
+    }
+    points.forEach(function(p){
+      ctx.beginPath();
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = 0.85;
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+
+</body>
+</html>
