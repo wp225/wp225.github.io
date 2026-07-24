@@ -11,18 +11,21 @@
 <link rel="preload" href="./songcloud.bin" as="fetch" crossorigin>
 <style>
   :root{
-    --bg: #0F1A1D;
-    --bg-alt: #142226;
-    --text: #E9E6DE;
-    --text-dim: #9BA8A8;
-    --line: #26363A;
-    --cyan: #52D9CF;
-    --amber: #F5B265;
-    --violet: #9C93D6;
-    --font-display: 'Space Grotesk', sans-serif;
-    --font-body: 'Inter', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-  }
+  --bg: #0F1A1D;
+  --bg-alt: #142226;
+  --text: #E9E6DE;
+  --text-dim: #9BA8A8;
+  --line: #26363A;
+  --cyan: #52D9CF;
+  --amber: #F5B265;
+  --violet: #9C93D6;
+
+  --panel-bg: rgba(15, 26, 29, 0.42);
+
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
 
   *{ box-sizing: border-box; margin:0; padding:0; }
   html, body {
@@ -139,36 +142,41 @@
     min-height: 1.4em;
   }
 
-  /* PROFILE OVERLAY - Glassmorphism style showing clusters behind */
+  /* PROFILE OVERLAY - Clean glassmorphism overlay */
   .profile-container {
-    position: fixed;
-    inset: 0;
-    z-index: 10;
-    
-    /* Reduced opacity to 25% for high cluster visibility */
-    background: rgba(15, 26, 29, 0.25);
-    
-    /* Reduced blur from 14px to 4px to keep point cloud sharp */
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    
-    overflow-y: auto;
-    opacity: 0;
-    transform: translateY(100vh);
-    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-    pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+
+  background: rgba(15, 26, 29, 0.18);
+
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+
+  overflow-y: auto;
+  opacity: 0;
+  transform: translateY(100vh);
+
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+
+  pointer-events: none;
   }
-  .profile-container.active {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto; /* Required so scrolling and clicking work inside profile */
-    }
 
   .profile-hero {
     padding: 96px 0 60px;
     border-bottom: 1px solid var(--line);
-    background: radial-gradient(circle at 50% 30%, rgba(15, 26, 29, 0.65) 0%, rgba(15, 26, 29, 0.15) 100%);
+    background: var(--panel-bg);
   }
+
+  .profile-container.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+
   h1.title{
     font-family: var(--font-display);
     font-weight: 700;
@@ -206,7 +214,11 @@
   .btn-ghost:hover{ border-color: var(--cyan); color: var(--cyan); }
 
   /* CONTENT SECTIONS */
-  section.content-sec{ padding: 56px 0; border-bottom: 1px solid var(--line); }
+  section.content-sec {
+    padding: 56px 0;
+    border-bottom: 1px solid var(--line);
+    background: var(--panel-bg);
+  }
   section.content-sec:last-of-type{ border-bottom:none; }
   h2.section-title{
     font-family: var(--font-display);
@@ -235,11 +247,11 @@
 
   /* PROJECT CARD */
   .project-card {
-    background: rgba(20, 34, 38, 0.55);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 26px 28px;
-  }
+  background: var(--panel-bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 26px 28px;
+}
   .project-head{ display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px; margin-bottom: 10px;}
   .project-title{ font-family: var(--font-display); font-weight:600; font-size:1.2rem; }
   .tag-row{ display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
@@ -259,7 +271,12 @@
   .skill-group dd{ color: var(--text-dim); font-size:0.92rem; }
 
   /* FOOTER */
-  footer{ position:relative; z-index:2; background: rgba(15, 26, 29, 0.85); padding: 46px 0 70px; }
+  footer {
+    position: relative;
+    z-index: 2;
+    background: rgba(15, 26, 29, 0.45);
+    padding: 46px 0 70px;
+  }
   .foot-inner{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
   .foot-links{ display:flex; gap:20px; font-family: var(--font-mono); font-size:0.85rem; }
   .foot-links a{ text-decoration:none; color: var(--text-dim); }
@@ -439,7 +456,7 @@
     <div class="wrap foot-note" style="margin-top:20px;">Arlington, TX — Open to AI/ML Engineering roles</div>
     <div class="wrap foot-note" style="margin-top:10px; color:var(--line);">
       Hero visualisation: 74,048 great tit dawn songs, 242 individuals, Wytham Woods 2020–2022.
-      Data: Merino Recalde et al. (2024), <em>Animal Behaviour</em>.
+      <em>Animal Behaviour</em>.
     </div>
   </footer>
 
@@ -458,34 +475,34 @@
   const statusEl = document.getElementById('cloud-status');
 
   let cloudInstance = null;
-  let isProfileActive = false;
 
   function enterProfile() {
-    // 1. Deselect individual cluster/song & restore full point cloud view
-    if (cloudInstance) {
-      if (typeof cloudInstance.clearSelection === 'function') cloudInstance.clearSelection();
-      if (typeof cloudInstance.deselectAll === 'function') cloudInstance.deselectAll();
-      if (typeof cloudInstance.selectCluster === 'function') cloudInstance.selectCluster(null);
-    }
+  // Select a random cluster only after the profile opens
+  if (
+    cloudInstance &&
+    typeof cloudInstance.selectRandomBird === 'function'
+  ) {
+    cloudInstance.selectRandomBird();
+  }
 
-    // 2. Update status label if available
-    if (statusEl) {
-      statusEl.textContent = '74,048 great tit dawn songs — 242 individuals';
-    }
+  if (statusEl) {
+    statusEl.textContent =
+      '74,048 great tit dawn songs — 242 individuals';
+  }
 
-    // 3. Reveal profile panel overlay over the complete song cloud
-    if (!profileContainer.classList.contains('active')) {
-      isProfileActive = true;
-      profileContainer.classList.add('active');
-      nav.classList.add('visible');
-      if (landingHud) landingHud.style.opacity = '0';
+  if (!profileContainer.classList.contains('active')) {
+    profileContainer.classList.add('active');
+    nav.classList.add('visible');
+
+    if (landingHud) {
+      landingHud.style.opacity = '0';
     }
   }
+}
 
   function exitProfile() {
     if (!profileContainer.classList.contains('active')) return;
     
-    isProfileActive = false;
     profileContainer.classList.remove('active');
     nav.classList.remove('visible');
     if (landingHud) landingHud.style.opacity = '1';
@@ -495,7 +512,7 @@
     }
   }
 
-  // Detect scrolling back up at top of profile to exit back to cloud
+  // Handle scroll-up at top of profile panel to return to interactive cloud view
   profileContainer.addEventListener('wheel', (e) => {
     if (profileContainer.scrollTop <= 0 && e.deltaY < 0) {
       exitProfile();
