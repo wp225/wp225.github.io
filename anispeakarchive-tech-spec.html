@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AniSpeakArchive Technical Specification</title>
+<meta name="description" content="Human-focused technical specification for AniSpeakArchive: architecture, data flow, retrieval stack, and reproducibility.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1a1d;
+    --bg-alt: #132328;
+    --panel: rgba(19, 35, 40, 0.72);
+    --line: #2a3c40;
+    --text: #e9e6de;
+    --text-dim: #9eabac;
+    --cyan: #52d9cf;
+    --amber: #f5b265;
+    --violet: #9c93d6;
+    --ok: #78d68b;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-body);
+    background: #0f1a1d;
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.65;
+  }
+
+  a { color: inherit; }
+
+  .wrap {
+    width: min(1080px, calc(100% - 40px));
+    margin: 0 auto;
+  }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background: rgba(15, 26, 29, 0.78);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .topbar-inner {
+    height: 62px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .brand {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    font-size: 1rem;
+  }
+
+  .crumb {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 7px 12px;
+  }
+
+  .hero {
+    padding: 62px 0 32px;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    color: var(--cyan);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5.2vw, 3.3rem);
+    line-height: 1.08;
+    margin: 10px 0 14px;
+  }
+
+  .hero-sub {
+    max-width: 760px;
+    color: var(--text-dim);
+    font-size: 1.04rem;
+  }
+
+  .meta-row {
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .meta-card {
+    border: 1px solid var(--line);
+    background: var(--panel);
+    border-radius: 12px;
+    padding: 14px;
+  }
+
+  .meta-label {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+
+  .meta-value {
+    font-size: 0.96rem;
+  }
+
+  section {
+    margin: 18px 0 18px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--panel);
+    overflow: hidden;
+  }
+
+  .sec-head {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--line);
+    background: rgba(15, 26, 29, 0.62);
+  }
+
+  .sec-title {
+    font-family: var(--font-display);
+    font-size: 1.34rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .sec-num {
+    font-family: var(--font-mono);
+    color: var(--text-dim);
+    font-size: 0.78rem;
+  }
+
+  .sec-body {
+    padding: 20px;
+  }
+
+  .lead {
+    color: var(--text-dim);
+    margin-bottom: 16px;
+  }
+
+  .fig {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px;
+    background: rgba(15, 26, 29, 0.52);
+  }
+
+  .fig-title {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--cyan);
+    margin-bottom: 10px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .fig-media {
+    width: 100%;
+    display: block;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: rgba(15, 26, 29, 0.5);
+  }
+
+  .fig-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .fig-link {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 11px;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--text-dim);
+    text-decoration: none;
+  }
+
+  .fig-link:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+  }
+
+  .flow {
+    border: 1px dashed var(--line);
+    border-radius: 10px;
+    padding: 14px;
+    background: rgba(15, 26, 29, 0.42);
+  }
+
+  .flow svg text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: #d8d6cf;
+  }
+
+  .note {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    margin-top: 10px;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 14px;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .pill {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 4px 10px;
+    color: var(--violet);
+    margin: 4px 6px 0 0;
+  }
+
+  .lane {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .lane-card {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px;
+    background: rgba(15, 26, 29, 0.45);
+    min-height: 112px;
+  }
+
+  .lane-card h4 {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--cyan);
+    margin-bottom: 7px;
+    text-transform: uppercase;
+  }
+
+  .lane-card p {
+    font-size: 0.89rem;
+    color: var(--text-dim);
+  }
+
+  .checklist li {
+    list-style: none;
+    margin-bottom: 8px;
+    color: var(--text-dim);
+    font-size: 0.93rem;
+    padding-left: 18px;
+    position: relative;
+  }
+
+  .checklist li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--ok);
+    font-weight: 700;
+  }
+
+  footer {
+    padding: 26px 0 50px;
+  }
+
+  .foot {
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+    color: var(--text-dim);
+    font-size: 0.88rem;
+  }
+
+  @media (max-width: 900px) {
+    .grid-2 { grid-template-columns: 1fr; }
+    .lane { grid-template-columns: 1fr 1fr; }
+    .meta-row { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 620px) {
+    .wrap { width: calc(100% - 26px); }
+    .lane { grid-template-columns: 1fr; }
+    .grid-3 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <div class="brand">AniSpeakArchive Technical Specification</div>
+    <a class="crumb" href="./index.html">Back to portfolio</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <section>
+    <div class="sec-head">
+      <h2 class="sec-title">Project Summary</h2>
+    </div>
+    <div class="sec-body">
+      <p class="lead">AniSpeakArchive is a production-oriented bioacoustics literature system that turns raw scholarly metadata into searchable, retrieval-grounded research support.</p>
+      <p class="note">The project repository is private while the work is under review at the AAAI Demo Track.</p>
+      <ul class="checklist">
+        <li>Two-stage relevance filter using SciBERT screening followed by Qwen-based metadata enrichment.</li>
+        <li>Fine-tuned domain filtering workflow for reducing corpus noise before indexing.</li>
+        <li>Taxonomy normalization to keep species and domain labels consistent across records.</li>
+        <li>Hybrid retrieval stack combining BM25, dense embeddings, and reranking.</li>
+        <li>LLM-backed metadata/response components served through vLLM for practical inference throughput.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2 class="sec-title">1.  Pipeline Source Document</h2>
+    </div>
+    <div class="sec-body">
+      <div class="fig">
+        <div class="fig-title">Figure F: Pipeline figure extracted from pipeline.pdf</div>
+        <img class="fig-media" src="./assets/anispeakarchive/pipeline-figure.png" alt="Pipeline figure extracted from pipeline.pdf">
+        <div class="fig-actions">
+          <a class="fig-link" href="./pipeline.pdf" target="_blank" rel="noopener">Open PDF in new tab</a>
+          <a class="fig-link" href="./pipeline.pdf" download>Download pipeline.pdf</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2 class="sec-title">2.  Retrieval Mechanics</h2>
+    </div>
+    <div class="sec-body">
+      <div class="fig">
+        <div class="fig-title">Figure D: Retrieval decision flow</div>
+        <div class="flow">
+          <svg viewBox="0 0 760 150" width="100%" role="img" aria-label="Retrieval flow">
+            <defs>
+              <marker id="arrow2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L7,3 z" fill="#9eabac"></path>
+              </marker>
+            </defs>
+            <rect x="16" y="52" width="120" height="42" rx="8" fill="none" stroke="#2a3c40"></rect>
+            <text x="76" y="78" text-anchor="middle">User query</text>
+
+            <rect x="172" y="24" width="150" height="42" rx="8" fill="none" stroke="#2a3c40"></rect>
+            <text x="247" y="50" text-anchor="middle">BM25 candidates</text>
+
+            <rect x="172" y="82" width="150" height="42" rx="8" fill="none" stroke="#2a3c40"></rect>
+            <text x="247" y="108" text-anchor="middle">Dense candidates</text>
+
+            <rect x="362" y="52" width="116" height="42" rx="8" fill="none" stroke="#2a3c40"></rect>
+            <text x="420" y="78" text-anchor="middle">RRF fusion</text>
+
+            <rect x="514" y="52" width="140" height="42" rx="8" fill="none" stroke="#2a3c40"></rect>
+            <text x="584" y="78" text-anchor="middle">Neural reranker</text>
+
+            <rect x="684" y="52" width="60" height="42" rx="8" fill="none" stroke="#2a3c40"></rect>
+            <text x="714" y="78" text-anchor="middle">Top-k</text>
+
+            <line x1="136" y1="73" x2="172" y2="45" stroke="#9eabac" marker-end="url(#arrow2)"></line>
+            <line x1="136" y1="73" x2="172" y2="103" stroke="#9eabac" marker-end="url(#arrow2)"></line>
+            <line x1="322" y1="45" x2="362" y2="73" stroke="#9eabac" marker-end="url(#arrow2)"></line>
+            <line x1="322" y1="103" x2="362" y2="73" stroke="#9eabac" marker-end="url(#arrow2)"></line>
+            <line x1="478" y1="73" x2="514" y2="73" stroke="#9eabac" marker-end="url(#arrow2)"></line>
+            <line x1="654" y1="73" x2="684" y2="73" stroke="#9eabac" marker-end="url(#arrow2)"></line>
+          </svg>
+        </div>
+        <p class="note">Flow reflects implementation structure: lexical and dense retrieval are fused, then reranked for final ordering.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2 class="sec-title">3. Evaluation Reality Check</h2>
+    </div>
+    <div class="sec-body">
+      <div class="fig">
+        <div class="fig-title">Current evaluation status</div>
+        <ul class="checklist">
+          <li>Metrics implemented: Accuracy, Precision, Recall, F1, AUROC.</li>
+          <li>Known constraint: no benchmark artifact committed in this portfolio repo.</li>
+          <li>Data/model availability and GPU environment affect reproducibility.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2 class="sec-title">4.  Product Experience Figure</h2>
+    </div>
+    <div class="sec-body">
+      <div class="fig">
+        <div class="fig-title">Figure B: Search interface used by researchers</div>
+        <img class="fig-media" src="./assets/anispeakarchive/ui_search.png" alt="AniSpeakArchive search page showing query input, filters, results list, and AI summary card.">
+      </div>
+    </div>
+  </section>
+</main>
+
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neural Segmentation Comparison Docs</title>
+<meta name="description" content="Documentation for neural song segmentation experiments comparing thresholding, supervised training, and semi-supervised Mean Teacher.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1a1d;
+    --panel: #16262b;
+    --panel-soft: #1a2d33;
+    --line: #2b3f45;
+    --text: #e9e6de;
+    --text-dim: #9fb0b0;
+    --accent: #52d9cf;
+    --mono: 'JetBrains Mono', monospace;
+    --body: 'Inter', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    line-height: 1.62;
+  }
+
+  .wrap {
+    width: min(1040px, calc(100% - 32px));
+    margin: 0 auto;
+  }
+
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(15, 26, 29, 0.84);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .top {
+    height: 62px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .title {
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text-dim);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 7px 12px;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+  }
+
+  .btn:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  main { padding: 30px 0 44px; }
+
+  .hero {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 14px;
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  h1 {
+    font-size: clamp(1.55rem, 3.5vw, 2.1rem);
+    margin-bottom: 10px;
+  }
+
+  .sub {
+    color: var(--text-dim);
+    max-width: 820px;
+  }
+
+  .meta {
+    margin-top: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .pill {
+    border: 1px solid var(--line);
+    background: var(--panel-soft);
+    border-radius: 999px;
+    padding: 5px 10px;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--text-dim);
+  }
+
+  section {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+
+  .sec-head {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--line);
+    background: rgba(26, 45, 51, 0.45);
+  }
+
+  .sec-head h2 {
+    font-size: 1.08rem;
+    font-weight: 600;
+  }
+
+  .sec-body {
+    padding: 16px;
+  }
+
+  .sec-body p { color: var(--text-dim); margin-bottom: 10px; }
+
+  .list {
+    padding-left: 18px;
+    color: var(--text-dim);
+  }
+
+  .list li { margin-bottom: 8px; }
+
+  .table-wrap { overflow-x: auto; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+    min-width: 720px;
+  }
+
+  th, td {
+    border-bottom: 1px solid var(--line);
+    padding: 10px;
+    text-align: left;
+  }
+
+  th {
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    background: rgba(15, 26, 29, 0.55);
+  }
+
+  .note {
+    margin-top: 10px;
+    font-size: 0.88rem;
+    color: var(--text-dim);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .sketch-figure {
+    position: relative;
+    border: 1px dashed #4f676f;
+    border-radius: 12px;
+    background: #122126;
+    padding: 10px;
+    overflow: hidden;
+  }
+
+  .sketch-figure img {
+    width: 100%;
+    display: block;
+    border-radius: 8px;
+    border: 1px solid #334a51;
+  }
+
+  .sketch-overlay {
+    position: absolute;
+    inset: 10px;
+    pointer-events: none;
+  }
+
+  .sketch-caption {
+    margin-top: 8px;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--text-dim);
+  }
+
+  .plain-figure {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: #122126;
+    padding: 10px;
+  }
+
+  .plain-figure img {
+    width: 100%;
+    display: block;
+    border-radius: 8px;
+    border: 1px solid #334a51;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 860px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap top">
+    <div class="title">Neural Segmentation Comparison</div>
+    <a class="btn" href="./index.html">Back to portfolio</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="eyebrow">Project documentation</div>
+    <h1>Semi-supervised vs supervised vs thresholding for birdsong segmentation</h1>
+    <p class="sub">This project is a small part of a bigger project. It is just focused on segmentation of bird syllable using semi-supervised technique</p>
+    <div class="meta">
+      <span class="pill">PyTorch </span>
+      <span class="pill">Mean Teacher</span>
+      <span class="pill">ConvRNNSegmentor</span>
+      <span class="pill">Few-shot training</span>
+      <span class="pill">Metrics: Acc / F1 / Precision / Recall / Jaccard</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>How it works</h2></div>
+    <div class="sec-body">
+      <p>Notebook workflow:</p>
+      <ul class="list">
+        <li>Implement threshold-based baselines (A/B/C variants) from signal envelope heuristics.</li>
+        <li>Train a supervised ConvRNNSegmentor on few-shot labeled data.</li>
+        <li>Train a semi-supervised Mean Teacher variant with confidence filtering on pseudo-labels.</li>
+        <li>Evaluate all methods with accuracy, F1, precision, recall, and Jaccard.</li>
+      </ul>
+      <p class="note">Notebook file in this repo: <a href="./assets/neural-segmentation/NeuralSegmentation.ipynb" style="color:inherit;">assets/neural-segmentation/NeuralSegmentation.ipynb</a></p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-body">
+      <p>Comparison overview of the segmentator approach used in this project.</p>
+      <div class="plain-figure">
+        <img src="./segmentator.png" alt="Segmentator comparison figure">
+      </div>
+      <div class="sketch-caption">Figure source: segmentator.png.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Methods compared</h2></div>
+    <div class="sec-body grid">
+      <div>
+        <p><strong>Thresholding baselines</strong></p>
+        <ul class="list">
+          <li>Variant A, B, C implemented with different thresholding and post-processing behavior.</li>
+          <li>Used as non-neural baselines per bird/species split.</li>
+        </ul>
+      </div>
+      <div>
+        <p><strong>Neural models</strong></p>
+        <ul class="list">
+          <li>Supervised ConvRNNSegmentor trained directly on labeled segments.</li>
+          <li>Semi-supervised Mean Teacher with ramp-up consistency and confidence-gated pseudo labels.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Mean Teacher algorithm overview</h2></div>
+    <div class="sec-body">
+      <p>Figure provided by you explaining the Mean Teacher training setup used in this experiment.</p>
+      <div class="plain-figure">
+        <img src="./mean_teacher.png" alt="Mean Teacher algorithm explanation figure">
+      </div>
+      <div class="sketch-caption">Figure source: mean_teacher.png.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Training dynamics figure (semi-supervised)</h2></div>
+    <div class="sec-body">
+      <p>Training-loss figure from your experiment artifact.</p>
+      <div class="sketch-figure">
+        <img src="./semi-sup.png" alt="Semi-supervised training loss figure">
+      </div>
+      <div class="sketch-caption">Figure source: semi-sup.png (local experiment output).</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Bengalese Finch results (per-bird F1)</h2></div>
+    <div class="sec-body table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Bird</th>
+            <th>Threshold C F1</th>
+            <th>Threshold B F1</th>
+            <th>Threshold A F1</th>
+            <th>Supervised F1</th>
+            <th>Semi-supervised F1</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>bl26lb16</td><td>69.02</td><td>91.67</td><td>97.73</td><td>96.96</td><td>97.86</td></tr>
+          <tr><td>gr41rd51</td><td>85.40</td><td>95.91</td><td>98.25</td><td>97.81</td><td>98.25</td></tr>
+          <tr><td>gy6or6</td><td>71.68</td><td>91.74</td><td>99.17</td><td>97.87</td><td>98.36</td></tr>
+          <tr><td>or60yw70</td><td>81.67</td><td>96.54</td><td>99.04</td><td>97.59</td><td>98.49</td></tr>
+        </tbody>
+      </table>
+      <p class="note">Species-level aggregate (printed): Supervised F1 = 98.2890, Semi-supervised F1 = 98.8331.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Canary results (per-bird F1)</h2></div>
+    <div class="sec-body table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Bird</th>
+            <th>Threshold C F1</th>
+            <th>Threshold B F1</th>
+            <th>Supervised F1</th>
+            <th>Semi-supervised F1</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>llb11</td><td>68.07</td><td>85.80</td><td>97.41</td><td>97.60</td></tr>
+          <tr><td>llb3</td><td>70.36</td><td>91.56</td><td>97.00</td><td>97.11</td></tr>
+          <tr><td>llb16</td><td>77.04</td><td>89.62</td><td>97.37</td><td>97.57</td></tr>
+        </tbody>
+      </table>
+      <p class="note">Canary pattern in this run: neural methods substantially outperform thresholding; semi-supervised is slightly higher than supervised on all listed birds.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Interpretation</h2></div>
+    <div class="sec-body">
+      <ul class="list">
+        <li>Thresholding can reach high precision but tends to lose recall in harder cases, reducing F1.</li>
+        <li>Supervised neural segmentation provides strong and stable gains over thresholding.</li>
+        <li>Semi-supervised Mean Teacher adds a consistent incremental improvement over supervised in this notebook run.</li>
+      </ul>
+      <p class="note">These statements are tied to the printed notebook outputs from this artifact and should be treated as run-specific until reproduced across independent splits.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Reproduce this run</h2></div>
+    <div class="sec-body">
+      <ul class="list">
+        <li>Open the notebook artifact and verify dependency versions from the Intro cell.</li>
+        <li>Run thresholding baselines first to establish non-neural reference points.</li>
+        <li>Run supervised and semi-supervised sections for Bengalese and Canaries.</li>
+        <li>Collect per-bird metrics from printed outputs and exported CSV logs.</li>
+      </ul>
+      <div class="meta">
+        <a class="btn" href="./assets/neural-segmentation/NeuralSegmentation.ipynb" download>Download notebook</a>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>
