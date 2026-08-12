@@ -8,19 +8,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="preload" href="./songcloud.bin" as="fetch" crossorigin>
+<link rel="preload" href="./assets/portfolio/songcloud.bin" as="fetch" crossorigin>
 <style>
   :root{
-  --bg: #0F1A1D;
-  --bg-alt: #142226;
-  --text: #E9E6DE;
-  --text-dim: #9BA8A8;
-  --line: #26363A;
-  --cyan: #52D9CF;
-  --amber: #F5B265;
-  --violet: #9C93D6;
+  --bg: #0B0D10;
+  --bg-alt: #11171A;
+  --text: #EDF2F6;
+  --text-dim: #A1ACB4;
+  --line: #2A3238;
+  --cyan: #DFE6EB;
+  --amber: #C4CCD1;
+  --violet: #CDD5DA;
 
-  --panel-bg: rgba(15, 26, 29, 0.42);
+  --panel-bg: rgba(17, 23, 26, 0.42);
 
   --font-display: 'Space Grotesk', sans-serif;
   --font-body: 'Inter', sans-serif;
@@ -72,8 +72,8 @@
     z-index: 1;
     pointer-events: none;
     background:
-      radial-gradient(120% 80% at 50% 110%, rgba(82, 217, 207, 0.18) 0%, rgba(82, 217, 207, 0) 60%),
-      radial-gradient(100% 70% at 50% -10%, rgba(156, 147, 214, 0.14) 0%, rgba(156, 147, 214, 0) 65%);
+      radial-gradient(120% 80% at 50% 110%, rgba(223, 230, 235, 0.12) 0%, rgba(223, 230, 235, 0) 60%),
+      radial-gradient(100% 70% at 50% -10%, rgba(196, 204, 209, 0.08) 0%, rgba(196, 204, 209, 0) 65%);
     opacity: 0.9;
     transition: opacity 0.5s ease;
   }
@@ -117,7 +117,7 @@
   /* NAV - Hidden until profile triggers */
   header.nav{
     position: fixed; top:0; left:0; right:0; z-index: 50;
-    background: rgba(15,26,29,0.78);
+    background: rgba(11,13,16,0.78);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--line);
@@ -140,7 +140,7 @@
   .nav-actions{ display:flex; align-items:center; gap:14px; }
   .nav-back{
     border: 1px solid var(--line);
-    background: rgba(15, 26, 29, 0.75);
+    background: rgba(17, 23, 26, 0.75);
     color: var(--text-dim);
     font-family: var(--font-mono);
     font-size: 0.75rem;
@@ -186,7 +186,7 @@
     display:flex;
     align-items:center;
     gap:8px;
-    background: rgba(15, 26, 29, 0.65);
+    background: rgba(17, 23, 26, 0.65);
     padding: 10px 18px;
     border-radius: 20px;
     backdrop-filter: blur(6px);
@@ -216,7 +216,7 @@
   inset: 0;
   z-index: 10;
 
-  background: linear-gradient(180deg, rgba(15, 26, 29, 0.32) 0%, rgba(15, 26, 29, 0.56) 100%);
+  background: linear-gradient(180deg, rgba(11, 13, 16, 0.36) 0%, rgba(11, 13, 16, 0.62) 100%);
 
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
@@ -239,7 +239,7 @@
     border: 1px solid var(--line);
     border-radius: 20px;
     overflow: hidden;
-    background: linear-gradient(180deg, rgba(15, 26, 29, 0.58) 0%, rgba(15, 26, 29, 0.4) 100%);
+    background: linear-gradient(180deg, rgba(17, 23, 26, 0.58) 0%, rgba(11, 13, 16, 0.4) 100%);
     box-shadow: 0 16px 48px rgba(0, 0, 0, 0.26);
   }
 
@@ -254,7 +254,7 @@
   .profile-hero {
     padding: 96px 0 60px;
     border-bottom: 1px solid var(--line);
-    background: rgba(15, 26, 29, 0.34);
+    background: rgba(11, 13, 16, 0.34);
   }
 
   .profile-container.active {
@@ -357,7 +357,7 @@
     padding: 18px 18px 14px;
     border: 1px solid rgba(38, 54, 58, 0.9);
     border-radius: 10px;
-    background: rgba(15, 26, 29, 0.34);
+    background: rgba(11, 13, 16, 0.34);
   }
   .entry:last-child{ margin-bottom:0; }
   .entry-head{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:6px; }
@@ -376,7 +376,7 @@
 
   /* PROJECT CARD */
   .project-card {
-  background: rgba(15, 26, 29, 0.44);
+  background: rgba(11, 13, 16, 0.44);
   border: 1px solid var(--line);
   border-radius: 10px;
   padding: 26px 28px;
@@ -398,7 +398,7 @@
     text-decoration: none;
     color: var(--text-dim);
     transition: border-color .15s, color .15s, background .15s;
-    background: rgba(15, 26, 29, 0.46);
+    background: rgba(11, 13, 16, 0.46);
   }
   .project-doc-link:hover{
     border-color: var(--cyan);
@@ -423,12 +423,12 @@
     padding: 14px 16px;
     border: 1px solid rgba(38, 54, 58, 0.85);
     border-radius: 10px;
-    background: rgba(15, 26, 29, 0.28);
+    background: rgba(11, 13, 16, 0.28);
   }
 
   /* FOOTER */
   footer {
-    background: rgba(15, 26, 29, 0.36);
+    background: rgba(11, 13, 16, 0.36);
     border-top: 1px solid var(--line);
     padding: 42px 0 58px;
   }
@@ -536,7 +536,7 @@
         I build production retrieval and search systems — semantic search, RAG pipelines, vector-database-backed retrieval, and LLM serving infrastructure — and currently research large-scale audio representation learning at UT Arlington. Based in Arlington, Texas.
       </p>
       <div class="cta-row">
-        <a class="btn btn-primary" href="resume.pdf" target="_blank" rel="noopener">Download Résumé</a>
+        <a class="btn btn-primary" href="./assets/portfolio/resume.pdf" target="_blank" rel="noopener">Download Résumé</a>
       </div>
       <div class="cta-meta">
         <a href="mailto:georgejoshi10@gmail.com">Email</a>
@@ -625,7 +625,7 @@
             <div class="project-head">
               <div class="project-topline">
                 <div class="project-title">AniSpeakArchive</div>
-                <a class="project-doc-link" href="anispeakarchive-tech-spec.html" target="_blank" rel="noopener">Docs</a>
+                <a class="project-doc-link" href="./projects/anispeakarchive/index.html" target="_blank" rel="noopener">Docs</a>
               </div>
               <div class="entry-meta" style="text-align:left">Bioacoustics Literature Search Engine</div>
             </div>
@@ -673,7 +673,7 @@
             <div class="project-head">
               <div class="project-topline">
                 <div class="project-title">Neural Segmentation Comparison</div>
-                <a class="project-doc-link" href="neural-segmentation-docs.html" target="_blank" rel="noopener">Docs</a>
+                <a class="project-doc-link" href="./projects/neural-segmentation/index.html" target="_blank" rel="noopener">Docs</a>
               </div>
               <div class="entry-meta" style="text-align:left">Semi-supervised vs supervised vs thresholding for birdsong segmentation</div>
             </div>
@@ -751,7 +751,7 @@
 { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
 </script>
 <script type="module">
-  import { initSongCloud } from './songcloud.js';
+  import { initSongCloud } from './assets/portfolio/songcloud.js';
 
   const profileContainer = document.getElementById('profileContainer');
   const nav = document.getElementById('nav');

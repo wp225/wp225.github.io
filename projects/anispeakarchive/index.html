@@ -10,16 +10,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0f1a1d;
-    --bg-alt: #132328;
-    --panel: rgba(19, 35, 40, 0.72);
-    --line: #2a3c40;
-    --text: #e9e6de;
-    --text-dim: #9eabac;
-    --cyan: #52d9cf;
-    --amber: #f5b265;
-    --violet: #9c93d6;
-    --ok: #78d68b;
+    --bg: #0b0d10;
+    --bg-alt: #11171a;
+    --panel: rgba(17, 23, 26, 0.72);
+    --line: #2a3238;
+    --text: #edf2f6;
+    --text-dim: #a1acb4;
+    --cyan: #dfe6eb;
+    --amber: #c4ccd1;
+    --violet: #cdd5da;
+    --ok: #a8b7ba;
     --font-display: 'Space Grotesk', sans-serif;
     --font-body: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
@@ -29,7 +29,7 @@
 
   body {
     font-family: var(--font-body);
-    background: #0f1a1d;
+    background: radial-gradient(circle at top, rgba(255,255,255,0.04), transparent 35%), #0b0d10;
     color: var(--text);
     min-height: 100vh;
     line-height: 1.65;
@@ -48,7 +48,7 @@
     z-index: 20;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    background: rgba(15, 26, 29, 0.78);
+    background: rgba(11, 13, 16, 0.78);
     border-bottom: 1px solid var(--line);
   }
 
@@ -111,7 +111,7 @@
 
   .meta-card {
     border: 1px solid var(--line);
-    background: var(--panel);
+    background: linear-gradient(180deg, rgba(17, 23, 26, 0.98), rgba(12, 15, 18, 0.98));
     border-radius: 12px;
     padding: 14px;
   }
@@ -131,14 +131,14 @@
     margin: 18px 0 18px;
     border: 1px solid var(--line);
     border-radius: 12px;
-    background: var(--panel);
+    background: linear-gradient(180deg, rgba(17, 23, 26, 0.98), rgba(12, 15, 18, 0.98));
     overflow: hidden;
   }
 
   .sec-head {
     padding: 18px 20px;
     border-bottom: 1px solid var(--line);
-    background: rgba(15, 26, 29, 0.62);
+    background: rgba(12, 15, 18, 0.9);
   }
 
   .sec-title {
@@ -168,7 +168,7 @@
     border: 1px solid var(--line);
     border-radius: 10px;
     padding: 14px;
-    background: rgba(15, 26, 29, 0.52);
+    background: rgba(12, 15, 18, 0.75);
   }
 
   .fig-title {
@@ -185,7 +185,7 @@
     display: block;
     border: 1px solid var(--line);
     border-radius: 10px;
-    background: rgba(15, 26, 29, 0.5);
+    background: rgba(11, 13, 16, 0.5);
   }
 
   .fig-actions {
@@ -216,7 +216,7 @@
     border: 1px dashed var(--line);
     border-radius: 10px;
     padding: 14px;
-    background: rgba(15, 26, 29, 0.42);
+    background: rgba(12, 15, 18, 0.62);
   }
 
   .flow svg text {
@@ -264,7 +264,7 @@
     border: 1px solid var(--line);
     border-radius: 10px;
     padding: 10px;
-    background: rgba(15, 26, 29, 0.45);
+    background: rgba(12, 15, 18, 0.62);
     min-height: 112px;
   }
 
@@ -327,7 +327,7 @@
 <header class="topbar">
   <div class="wrap topbar-inner">
     <div class="brand">AniSpeakArchive Technical Specification</div>
-    <a class="crumb" href="./index.html">Back to portfolio</a>
+    <a class="crumb" href="../../index.html">Back to portfolio</a>
   </div>
 </header>
 
@@ -356,10 +356,10 @@
     <div class="sec-body">
       <div class="fig">
         <div class="fig-title">Figure F: Pipeline figure extracted from pipeline.pdf</div>
-        <img class="fig-media" src="./assets/anispeakarchive/pipeline-figure.png" alt="Pipeline figure extracted from pipeline.pdf">
+        <img class="fig-media" src="../../assets/anispeakarchive/pipeline-figure.png" alt="Pipeline figure extracted from pipeline.pdf">
         <div class="fig-actions">
-          <a class="fig-link" href="./pipeline.pdf" target="_blank" rel="noopener">Open PDF in new tab</a>
-          <a class="fig-link" href="./pipeline.pdf" download>Download pipeline.pdf</a>
+          <a class="fig-link" href="../../assets/anispeakarchive/pipeline.pdf" target="_blank" rel="noopener">Open PDF in new tab</a>
+          <a class="fig-link" href="../../assets/anispeakarchive/pipeline.pdf" download>Download pipeline.pdf</a>
         </div>
       </div>
     </div>
@@ -433,7 +433,7 @@
     <div class="sec-body">
       <div class="fig">
         <div class="fig-title">Figure B: Search interface used by researchers</div>
-        <img class="fig-media" src="./assets/anispeakarchive/ui_search.png" alt="AniSpeakArchive search page showing query input, filters, results list, and AI summary card.">
+        <img class="fig-media" src="../../assets/anispeakarchive/ui_search.png" alt="AniSpeakArchive search page showing query input, filters, results list, and AI summary card.">
       </div>
     </div>
   </section>

@@ -10,13 +10,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0f1a1d;
-    --panel: #16262b;
-    --panel-soft: #1a2d33;
-    --line: #2b3f45;
-    --text: #e9e6de;
-    --text-dim: #9fb0b0;
-    --accent: #52d9cf;
+    --bg: #0b0d10;
+    --panel: #11171a;
+    --panel-soft: #181e23;
+    --line: #2a3238;
+    --text: #edf2f6;
+    --text-dim: #a1acb4;
+    --accent: #dfe6eb;
     --mono: 'JetBrains Mono', monospace;
     --body: 'Inter', sans-serif;
   }
@@ -24,7 +24,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    background: var(--bg);
+    background: radial-gradient(circle at top, rgba(255,255,255,0.04), transparent 35%), var(--bg);
     color: var(--text);
     font-family: var(--body);
     line-height: 1.62;
@@ -39,7 +39,7 @@
     position: sticky;
     top: 0;
     z-index: 10;
-    background: rgba(15, 26, 29, 0.84);
+    background: rgba(11, 13, 16, 0.84);
     backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--line);
   }
@@ -78,7 +78,7 @@
   main { padding: 30px 0 44px; }
 
   .hero {
-    background: var(--panel);
+    background: linear-gradient(180deg, rgba(17, 23, 26, 0.98), rgba(13, 17, 19, 0.98));
     border: 1px solid var(--line);
     border-radius: 12px;
     padding: 20px;
@@ -122,7 +122,7 @@
   }
 
   section {
-    background: var(--panel);
+    background: linear-gradient(180deg, rgba(17, 23, 26, 0.98), rgba(12, 15, 18, 0.98));
     border: 1px solid var(--line);
     border-radius: 12px;
     margin-bottom: 14px;
@@ -132,7 +132,7 @@
   .sec-head {
     padding: 14px 16px;
     border-bottom: 1px solid var(--line);
-    background: rgba(26, 45, 51, 0.45);
+    background: rgba(12, 15, 18, 0.9);
   }
 
   .sec-head h2 {
@@ -174,7 +174,7 @@
     color: var(--text-dim);
     text-transform: uppercase;
     letter-spacing: 0.03em;
-    background: rgba(15, 26, 29, 0.55);
+    background: rgba(11, 13, 16, 0.55);
   }
 
   .note {
@@ -191,9 +191,9 @@
 
   .sketch-figure {
     position: relative;
-    border: 1px dashed #4f676f;
+    border: 1px dashed #34414a;
     border-radius: 12px;
-    background: #122126;
+    background: #11171a;
     padding: 10px;
     overflow: hidden;
   }
@@ -221,7 +221,7 @@
   .plain-figure {
     border: 1px solid var(--line);
     border-radius: 12px;
-    background: #122126;
+    background: #11171a;
     padding: 10px;
   }
 
@@ -243,7 +243,7 @@
 <header>
   <div class="wrap top">
     <div class="title">Neural Segmentation Comparison</div>
-    <a class="btn" href="./index.html">Back to portfolio</a>
+    <a class="btn" href="../../index.html">Back to portfolio</a>
   </div>
 </header>
 
@@ -271,7 +271,7 @@
         <li>Train a semi-supervised Mean Teacher variant with confidence filtering on pseudo-labels.</li>
         <li>Evaluate all methods with accuracy, F1, precision, recall, and Jaccard.</li>
       </ul>
-      <p class="note">Notebook file in this repo: <a href="./assets/neural-segmentation/NeuralSegmentation.ipynb" style="color:inherit;">assets/neural-segmentation/NeuralSegmentation.ipynb</a></p>
+      <p class="note">Notebook file in this repo: <a href="../../assets/neural-segmentation/NeuralSegmentation.ipynb" style="color:inherit;">assets/neural-segmentation/NeuralSegmentation.ipynb</a></p>
     </div>
   </section>
 
@@ -279,7 +279,7 @@
     <div class="sec-body">
       <p>Comparison overview of the segmentator approach used in this project.</p>
       <div class="plain-figure">
-        <img src="./segmentator.png" alt="Segmentator comparison figure">
+        <img src="../../assets/neural-segmentation/segmentator.png" alt="Segmentator comparison figure">
       </div>
       <div class="sketch-caption">Figure source: segmentator.png.</div>
     </div>
@@ -310,7 +310,7 @@
     <div class="sec-body">
       <p>Figure provided by you explaining the Mean Teacher training setup used in this experiment.</p>
       <div class="plain-figure">
-        <img src="./mean_teacher.png" alt="Mean Teacher algorithm explanation figure">
+        <img src="../../assets/neural-segmentation/mean_teacher.png" alt="Mean Teacher algorithm explanation figure">
       </div>
       <div class="sketch-caption">Figure source: mean_teacher.png.</div>
     </div>
@@ -319,9 +319,9 @@
   <section>
     <div class="sec-head"><h2>Training dynamics figure (semi-supervised)</h2></div>
     <div class="sec-body">
-      <p>Training-loss figure from your experiment artifact.</p>
+      <p>Training-loss figure from experiment artifact.</p>
       <div class="sketch-figure">
-        <img src="./semi-sup.png" alt="Semi-supervised training loss figure">
+        <img src="../../assets/neural-segmentation/semi-sup.png" alt="Semi-supervised training loss figure">
       </div>
       <div class="sketch-caption">Figure source: semi-sup.png (local experiment output).</div>
     </div>
@@ -397,7 +397,7 @@
         <li>Collect per-bird metrics from printed outputs and exported CSV logs.</li>
       </ul>
       <div class="meta">
-        <a class="btn" href="./assets/neural-segmentation/NeuralSegmentation.ipynb" download>Download notebook</a>
+        <a class="btn" href="../../assets/neural-segmentation/NeuralSegmentation.ipynb" download>Download notebook</a>
       </div>
     </div>
   </section>

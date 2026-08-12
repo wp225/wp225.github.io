@@ -5,9 +5,9 @@
 
 import * as THREE from 'three';
 
-const PALETTE = ['#52D9CF', '#9C93D6', '#F5B265'];
+const PALETTE = ['#E5E7EB', '#B7C0C8', '#8997A3'];
 const DARK_MIX = 0.26;
-const BG = { r: 0x0f / 255, g: 0x1a / 255, b: 0x1d / 255 };
+const BG = { r: 0x0b / 255, g: 0x0d / 255, b: 0x10 / 255 };
 
 const IDLE_SPIN = 0.06;
 
