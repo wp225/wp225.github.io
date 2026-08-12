@@ -11,23 +11,47 @@ const BG = { r: 0x0b / 255, g: 0x0d / 255, b: 0x10 / 255 };
 
 const IDLE_SPIN = 0.06;
 
-function hexToRgb(hex) {
-  const v = parseInt(hex.slice(1), 16);
-  return { r: ((v >> 16) & 255) / 255, g: ((v >> 8) & 255) / 255, b: (v & 255) / 255 };
-}
+function hslToRgb(h, s, l) {
+  const hue2rgb = (p, q, t) => {
+    let tt = t;
+    if (tt < 0) tt += 1;
+    if (tt > 1) tt -= 1;
+    if (tt < 1 / 6) return p + (q - p) * 6 * tt;
+    if (tt < 1 / 2) return q;
+    if (tt < 2 / 3) return p + (q - p) * (2 / 3 - tt) * 6;
+    return p;
+  };
 
-function paletteColor(t) {
-  const stops = PALETTE.map(hexToRgb);
-  const scaled = Math.min(0.999, Math.max(0, t)) * (stops.length - 1);
-  const i = Math.floor(scaled);
-  const f = scaled - i;
-  const a = stops[i];
-  const b = stops[Math.min(stops.length - 1, i + 1)];
+  if (s === 0) {
+    return { r: l, g: l, b: l };
+  }
+
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+  const p = 2 * l - q;
 
   return {
-    r: a.r + (b.r - a.r) * f,
-    g: a.g + (b.g - a.g) * f,
-    b: a.b + (b.b - a.b) * f,
+    r: hue2rgb(p, q, h + 1 / 3),
+    g: hue2rgb(p, q, h),
+    b: hue2rgb(p, q, h - 1 / 3),
+  };
+}
+
+function clusterColorForBird(index, totalBirds) {
+  const goldenAngle = 137.508;
+  const hue = (index * goldenAngle) % 360;
+  const normalizedHue = hue / 360;
+
+  const saturation = 0.63 + ((index * 17) % 11) * 0.02;
+  const lightness = 0.58 + ((index * 29) % 9) * 0.025;
+
+  const base = hslToRgb(normalizedHue, Math.min(0.9, saturation), Math.min(0.78, lightness));
+
+  const mix = 0.2 + (index / Math.max(1, totalBirds)) * 0.4;
+
+  return {
+    r: base.r * (1 - mix) + 0.9 * mix,
+    g: base.g * (1 - mix) + 0.9 * mix,
+    b: base.b * (1 - mix) + 0.9 * mix,
   };
 }
 
@@ -447,37 +471,19 @@ export async function initSongCloud(options = {}) {
     b < birdCount;
     b++
   ) {
-    const shuffled =
-      ((b * 97) % birdCount) /
-      Math.max(1, birdCount - 1);
-
     const base =
-      paletteColor(shuffled);
-
-    const lift =
-      0.78 +
-      0.44 *
-      (((b * 53) % 17) / 16);
+      clusterColorForBird(
+        b,
+        birdCount
+      );
 
     birdColors.push(
       towardBackground(
         {
-          r: Math.min(
-            1,
-            base.r * lift
-          ),
-
-          g: Math.min(
-            1,
-            base.g * lift
-          ),
-
-          b: Math.min(
-            1,
-            base.b * lift
-          ),
+          r: Math.min(1, base.r),
+          g: Math.min(1, base.g),
+          b: Math.min(1, base.b),
         },
-
         DARK_MIX
       )
     );
@@ -816,67 +822,6 @@ export async function initSongCloud(options = {}) {
 
   const pointer =
     new THREE.Vector2();
-
-  window.addEventListener(
-    'pointermove',
-    (e) => {
-      if (
-        !controls.enabled
-      ) {
-        return;
-      }
-
-      pointer.x =
-        (e.clientX /
-          window.innerWidth) *
-        2 -
-        1;
-
-      pointer.y =
-        -(
-          e.clientY /
-          window.innerHeight
-        ) *
-        2 +
-        1;
-
-      raycaster.setFromCamera(
-        pointer,
-        camera
-      );
-
-      const intersects =
-        raycaster.intersectObject(
-          points
-        );
-
-      if (
-        intersects.length > 0
-      ) {
-        canvas.style.cursor =
-          'pointer';
-
-        if (
-          selectedBird === -1
-        ) {
-          uniforms.uSelected.value =
-            birdIds[
-              intersects[0].index
-            ];
-        }
-      } else {
-        canvas.style.cursor =
-          'default';
-
-        if (
-          selectedBird === -1
-        ) {
-          uniforms.uSelected.value =
-            -1;
-        }
-      }
-    }
-  );
 
   window.addEventListener(
     'click',
