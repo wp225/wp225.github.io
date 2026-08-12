@@ -333,10 +333,13 @@ export class HeroControls {
 }
 
 export async function initSongCloud(options = {}) {
+  const defaultDataUrl = new URL('./songcloud.json', import.meta.url).href;
+  const defaultBinUrl = new URL('./songcloud.bin', import.meta.url).href;
+
   const {
     canvas,
-    dataUrl = './songcloud.json',
-    binUrl = './songcloud.bin',
+    dataUrl = defaultDataUrl,
+    binUrl = defaultBinUrl,
     onStatus = () => {},
     onEnterProfile = null,
   } = options;
